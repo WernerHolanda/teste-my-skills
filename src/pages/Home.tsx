@@ -12,13 +12,23 @@ import { ButtonAdd } from '../components/ButtonAdd';
 import { SkillCard } from '../components/SkillCard';
 
 
+interface SkillData {
+    id: string;
+    name: string;
+}
+
+
 export function Home(){
     const [newSkill,setNewSkill] = useState('');
-    const [mySkills, setMySkills] = useState([])
+    const [mySkills, setMySkills] = useState<SkillData[]>([])
     const [gretting, setGretting] = useState('')
 
     function handleAddNewSkill() {
-        setMySkills(oldState => [...oldState, newSkill]) //setMy...significa atualizeminhas skills, pegando o estado antigo, spreadoperator, pegar minha old state, e adicione a newSkill
+        const data = {
+            id: String(new Date().getTime()),
+            name: newSkill
+        }
+        setMySkills(oldState => [...oldState, data]) //setMy...significa atualizeminhas skills, pegando o estado antigo, spreadoperator, pegar minha old state, e adicione a newSkill
     }
 
     useEffect(() => { //useEffect é para renderizar uma alteração/ou estado, o 1ªparam é uma função, 2º é '[]' e isso carrega toda vez q o app for acessado. 
@@ -67,9 +77,9 @@ export function Home(){
 
             <FlatList
                 data={mySkills}
-                keyExtractor={item => item}
+                keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <SkillCard skill={item}// AQUI signf que eu desestruturei '{({item})}' e que peguei o item.item                    />
+                    <SkillCard skill={item.name}// AQUI signf que eu desestruturei '{({item})}' e que peguei o item.item                    />
                     />
             )}
             />
