@@ -1,7 +1,13 @@
-import React, { useState } from 'react';
-
-import { Platform } from 'react-native';
-import {  View, Text, StyleSheet, SafeAreaView, TextInput, } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {  View, 
+    Text, 
+    StyleSheet, 
+    SafeAreaView, 
+    TextInput,
+    Platform, 
+    FlatList,
+    StatusBar
+} from 'react-native';
 import { ButtonAdd } from '../components/ButtonAdd';
 import { SkillCard } from '../components/SkillCard';
 
@@ -9,17 +15,41 @@ import { SkillCard } from '../components/SkillCard';
 export function Home(){
     const [newSkill,setNewSkill] = useState('');
     const [mySkills, setMySkills] = useState([])
-    const [] = useState('')
+    const [gretting, setGretting] = useState('')
 
     function handleAddNewSkill() {
         setMySkills(oldState => [...oldState, newSkill]) //setMy...significa atualizeminhas skills, pegando o estado antigo, spreadoperator, pegar minha old state, e adicione a newSkill
     }
 
+    useEffect(() => { //useEffect é para renderizar uma alteração/ou estado, o 1ªparam é uma função, 2º é '[]' e isso carrega toda vez q o app for acessado. 
+        const currentHour = new Date().getHours();
+        
+        if(currentHour < 12){
+            setGretting('Good morning');
+        }
+        else if(currentHour >= 12 && currentHour < 18){
+            setGretting('Good Afternoon');
+        }
+        else {
+            setGretting('Good Night');
+        }
+
+    }, [])
+
+    
+    
+
     return (
         <View style={styles.container}>
             
-            <Text style={styles.title}>Welcome again, Werner</Text>
+            <StatusBar barStyle="light-content" />
+
+            <Text style={styles.title}>{gretting}</Text>
+
+            <Text style={styles.title}>Welcome back again, Werner!</Text>
             
+            <Text style={styles.title}>Lets put some of yours already learned dev languages:</Text>
+
             <TextInput 
             style={styles.input}
             placeholder="New Skill"
@@ -34,13 +64,16 @@ export function Home(){
             <Text style={[styles.title, { marginTop: 50 }]}>
                     My Skills                
             </Text>
-        
-            {  // abaixo signf que eu quero pelo map, a propriedade skill linkada no component Skill que receberá uma função exportada do SKillCard.js, com as propriedades lá colocadas, e que deve apresentar o testo {skill}
-                mySkills.map(skill => (
-                    <SkillCard skill={skill}
+
+            <FlatList
+                data={mySkills}
+                keyExtractor={item => item}
+                renderItem={({ item }) => (
+                    <SkillCard skill={item}// AQUI signf que eu desestruturei '{({item})}' e que peguei o item.item                    />
                     />
-                ))        
-            }
+            )}
+            />
+            
         </View>
     )
 }
