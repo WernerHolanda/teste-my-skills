@@ -2,14 +2,23 @@ import React from 'react';
 import { 
     TouchableOpacity,
     Text,
-    StyleSheet
+    StyleSheet,
+    TouchableOpacityProps
  } from 'react-native';
 
-export function SkillCard({ skill // a 'skill' laranja aqui é o link com o Home, para passar exatamente as propriedades que passaram aqui. Lembrando que na HOme, eu tenho que chamar essa propriedade 'Skill' 
-}){
+
+interface SkillCardProps extends TouchableOpacityProps {
+    skill: string;
+}
+
+export function SkillCard({ skill, ...rest // a 'skill' laranja aqui é o link com o Home, para passar exatamente as propriedades que passaram aqui. Lembrando que na HOme, eu tenho que chamar essa propriedade 'Skill' 
+} : SkillCardProps){
     return(
-            <TouchableOpacity key={skill // a 'skill' aqui sgn que o txt passado ficará opaco se clicado.
-            } style={styles.buttonSkill}>
+            <TouchableOpacity 
+            key={skill // a 'skill' aqui sgn que o txt passado ficará opaco se clicado.
+            } 
+            style={styles.buttonSkill} 
+            {...rest}>
                 <Text style={styles.textSkill}>
                     {skill //a 'skill' aqui significa que é pra escrever o txt de qual skill foi passada
                     } 

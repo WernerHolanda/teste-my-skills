@@ -31,6 +31,12 @@ export function Home(){
         setMySkills(oldState => [...oldState, data]) //setMy...significa atualizeminhas skills, pegando o estado antigo, spreadoperator, pegar minha old state, e adicione a newSkill
     }
 
+    function handleRemoveSkill(id: string){
+        setMySkills(oldState => oldState.filter(
+            skill => skill.id !== id
+        ));
+    }
+
     useEffect(() => { //useEffect é para renderizar uma alteração/ou estado, o 1ªparam é uma função, 2º é '[]' e isso carrega toda vez q o app for acessado. 
         const currentHour = new Date().getHours();
         
@@ -79,7 +85,9 @@ export function Home(){
                 data={mySkills}
                 keyExtractor={item => item.id}
                 renderItem={({ item }) => (
-                    <SkillCard skill={item.name}// AQUI signf que eu desestruturei '{({item})}' e que peguei o item.item                    />
+                    <SkillCard
+                    onPress={() => handleRemoveSkill(item.id)} 
+                    skill={item.name}// AQUI signf que eu desestruturei '{({item})}' e que peguei o item.item                    />
                     />
             )}
             />
